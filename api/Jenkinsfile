@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    
+    environment {
+        GITHUB_REPO_URL = 'https://github.com/Telana99/4038_kuruwitaarachchi-.git'
+        
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: "${env.GITHUB_REPO_URL}"
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                bat 'docker build -t app-server .'
+            }
+        }
+        
+        stage('Run Docker Image') {
+            steps {
+                bat 'docker run -d -p 3001:3001 app-server'
+            }
+        }
+        
+    }
+}
